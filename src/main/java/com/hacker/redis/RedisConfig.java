@@ -49,15 +49,4 @@ public class RedisConfig {
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
         return redisTemplate;
     }
-
-    @Bean(name = "myStringRedisTemplate")
-    public RedisTemplate<String, String> initStringRedisTemplate() {
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        RedisSerializer<String> stringSerializer = new StringRedisSerializer();
-        redisTemplate.setConnectionFactory(this.defaultConnectionFactory());
-        redisTemplate.setKeySerializer(stringSerializer);
-        redisTemplate.setValueSerializer(stringSerializer);
-        return redisTemplate;
-    }
-
 }

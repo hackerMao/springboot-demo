@@ -2,18 +2,21 @@ package com.hacker.controller;
 
 
 import com.hacker.core.enumeration.CaptchaType;
+import com.hacker.dto.CaptchaDTO;
 import com.hacker.dto.RegisterByPwdDTO;
 import com.hacker.entity.UserInfoEntity;
-import com.hacker.entity.UserLoginEntity;
+import com.hacker.exception.ForbiddenException;
 import com.hacker.exception.NotFoundException;
 import com.hacker.exception.ParameterException;
+import com.hacker.exception.ServerErrorException;
 import com.hacker.service.UserLoginService;
 import com.hacker.service.UserService;
 import com.hacker.utils.CaptchaUtil;
+import com.hacker.utils.JwtAuthUtil;
 import com.hacker.vo.UserVO;
 import com.hacker.vo.common.ResponseVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +41,22 @@ public class UserController {
         return ResponseVO.success("hello");
     }
 
+    @PostMapping("/sendCaptcha")
+    public ResponseVO<Object> sendCaptchaHandler(@org.jetbrains.annotations.NotNull @Validated @RequestBody CaptchaDTO dto) {
+        CaptchaType captchaType = CaptchaType.toType(dto.getType());
+        if (captchaType == null) {
+            throw new ParameterException(20010);
+        }
+        if (CaptchaUtil.hasFlag(dto.getPhoneNumber(), captchaType)) {
+            throw new ForbiddenException(20009);
+        }
+        Boolean ok = CaptchaUtil.send(dto.getPhoneNumber(), captchaType);
+        if (!ok) {
+            throw new ServerErrorException(10019);
+        }
+        return ResponseVO.success(null);
+    }
+
     @PostMapping("/register/byPwd")
     public ResponseVO<Object> registerByPwdHandler(@Validated @RequestBody RegisterByPwdDTO dto) {
         boolean ok = CaptchaUtil.checkCaptcha(dto.getPhoneNumber(), CaptchaType.REGISTER, dto.getCaptcha());
@@ -49,6 +68,10 @@ public class UserController {
         }
 
         UserInfoEntity userInfoEntity = userService.register(dto);
-        return ResponseVO.success(userInfoEntity);
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(userInfoEntity, userVO);
+
+        JwtAuthUtil.sign(userVO);
+        return ResponseVO.success(userVO);
     }
 }

@@ -24,6 +24,7 @@ public enum CaptchaType {
 
     CaptchaType(int value, String text) {
         this.value = value;
+        this.text = text;
     }
 
     public String getText() {

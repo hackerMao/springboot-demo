@@ -2,6 +2,7 @@ package com.hacker.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hacker.entity.UserInfoEntity;
+import org.springframework.stereotype.Repository;
 
 /**
  * @Description
@@ -9,5 +10,6 @@ import com.hacker.entity.UserInfoEntity;
  * @Date 2021/1/26
  * @Version 1.0
  */
+@Repository
 public interface UserInfoMapper extends BaseMapper<UserInfoEntity> {
 }

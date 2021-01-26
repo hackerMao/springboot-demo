@@ -31,4 +31,10 @@ public class UserVO {
     private String emergencyContactPhone;
     private Boolean isRealName;
     private Boolean hasChecking;
+    private String accessToken;
+    // accessToken过期时间
+    private Long accessTokenExpiration;
+    private String refreshToken;
+    // refreshToken过期时间
+    private Long refreshTokenExpiration;
 }

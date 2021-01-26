@@ -29,5 +29,12 @@ public interface UserLoginService {
      */
     boolean existed(String phoneNumber);
 
+    /**
+     * 添加新用户
+     *
+     * @param userLoginEntity com.hacker.entity.UserLoginEntity
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     */
     void addUser(UserLoginEntity userLoginEntity) throws NoSuchAlgorithmException, InvalidKeySpecException;
 }
