@@ -2,6 +2,9 @@ package com.hacker.service;
 
 import com.hacker.entity.UserLoginEntity;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 /**
  * @Description 用户登录业务层接口
  * @Author mr.mao_hacker
@@ -25,4 +28,6 @@ public interface UserLoginService {
      * @return boolean
      */
     boolean existed(String phoneNumber);
+
+    void addUser(UserLoginEntity userLoginEntity) throws NoSuchAlgorithmException, InvalidKeySpecException;
 }

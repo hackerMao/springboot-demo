@@ -1,5 +1,7 @@
 package com.hacker.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hacker.entity.UserLoginEntity;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Repository;
  * @Version 1.0
  */
 @Repository
-public interface UserLoginMapper {
+public interface UserLoginMapper extends BaseMapper<UserLoginEntity> {
 
     boolean existed(String phoneNumber);
 }

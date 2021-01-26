@@ -1,6 +1,7 @@
 package com.hacker.service;
 
 import com.hacker.dto.RegisterByPwdDTO;
+import com.hacker.entity.UserInfoEntity;
 import com.hacker.vo.UserVO;
 
 /**
@@ -17,5 +18,5 @@ public interface UserService {
      * @param dto com.hacker.dto.RegisterByPwdDTO
      * @return com.hacker.vo.UserVO
      */
-    UserVO register(RegisterByPwdDTO dto);
+    UserInfoEntity register(RegisterByPwdDTO dto);
 }

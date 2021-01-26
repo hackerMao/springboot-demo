@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.Random;
 
 /**
  * @Description TODO
@@ -17,7 +18,7 @@ import java.util.Date;
 @Getter
 @ToString
 @NoArgsConstructor
-public class UserEntity extends BaseEntity {
+public class UserInfoEntity extends BaseEntity {
     private Integer loginId;
     private String ddId;
     private String nickname;
@@ -34,4 +35,11 @@ public class UserEntity extends BaseEntity {
     private String emergencyContactPhone;
     private Boolean isRealName;
     private Boolean hasChecking;
+
+    public void generateDdId(Integer loginId) {
+        Random random = new Random();
+        Integer num = Math.toIntExact(loginId + 1001);
+        String s = String.format("%7d", num).replace(" ", "0");
+        this.ddId = 1 + s + random.nextInt(9) % 10;
+    }
 }

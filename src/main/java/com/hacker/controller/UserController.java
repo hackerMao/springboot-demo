@@ -3,6 +3,7 @@ package com.hacker.controller;
 
 import com.hacker.core.enumeration.CaptchaType;
 import com.hacker.dto.RegisterByPwdDTO;
+import com.hacker.entity.UserInfoEntity;
 import com.hacker.entity.UserLoginEntity;
 import com.hacker.exception.NotFoundException;
 import com.hacker.exception.ParameterException;
@@ -12,6 +13,7 @@ import com.hacker.utils.CaptchaUtil;
 import com.hacker.vo.UserVO;
 import com.hacker.vo.common.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +48,7 @@ public class UserController {
             throw new NotFoundException(20005);
         }
 
-        UserVO userVO = userService.register(dto);
-        return ResponseVO.success(userVO);
+        UserInfoEntity userInfoEntity = userService.register(dto);
+        return ResponseVO.success(userInfoEntity);
     }
 }
