@@ -1,6 +1,9 @@
 package com.hacker.service.impl;
 
+import com.hacker.entity.UserLoginEntity;
+import com.hacker.mapper.UserLoginMapper;
 import com.hacker.service.UserLoginService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,4 +14,17 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserLoginServiceImpl implements UserLoginService {
+
+    @Autowired
+    private UserLoginMapper userLoginMapper;
+
+    @Override
+    public UserLoginEntity selectByPhone(String phoneNumber) {
+        return null;
+    }
+
+    @Override
+    public boolean existed(String phoneNumber) {
+        return userLoginMapper.existed(phoneNumber);
+    }
 }

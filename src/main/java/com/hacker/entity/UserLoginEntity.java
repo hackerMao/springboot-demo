@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class UserLoginEntity extends BaseEntity {
-    private String phone;
+    private String phoneNumber;
     private String password;
     private String salt;
     private String openid;

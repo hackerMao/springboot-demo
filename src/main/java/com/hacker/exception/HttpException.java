@@ -1,4 +1,4 @@
-package com.hacker.utils.exception;
+package com.hacker.exception;
 
 import lombok.Getter;
 
