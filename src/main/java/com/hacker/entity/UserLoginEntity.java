@@ -1,9 +1,8 @@
 package com.hacker.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 /**
  * @Description TODO
@@ -11,10 +10,10 @@ import lombok.ToString;
  * @Date 2021/1/25 21:09
  * @Version 1.0
  */
-@Setter
-@Getter
-@ToString
-@NoArgsConstructor
+@Data
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
+@TableName(value = "user_login")
 public class UserLoginEntity extends BaseEntity {
     private String phoneNumber;
     private String password;

@@ -6,11 +6,12 @@ import com.hacker.core.enumeration.CaptchaType;
 import com.hacker.exception.ParameterException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Description
@@ -23,8 +24,15 @@ import java.util.Random;
 public class CaptchaUtil {
 
     @Autowired
-    @Qualifier("defaultRedisTemplate")
-    private static RedisTemplate<String, Object> redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
+
+    private static CaptchaUtil captchaUtil;
+
+    @PostConstruct
+    public void init() {
+        captchaUtil = this;
+        captchaUtil.stringRedisTemplate = this.stringRedisTemplate;
+    }
 
     /**
      * 判断是否存验证码发送记录
@@ -37,7 +45,7 @@ public class CaptchaUtil {
     public static Boolean hasFlag(String phoneNumber, CaptchaType t) throws ParameterException {
         try {
             String flag = String.format(RedisKeyConstant.CAPTCHA_FLAG_KEY, t.getText(), phoneNumber);
-            return redisTemplate.opsForValue().get(flag) != null;
+            return captchaUtil.stringRedisTemplate.opsForValue().get(flag) != null;
         } catch (Exception e) {
             e.printStackTrace();
             log.error(phoneNumber + ": 判断验证码标记异常-->" + e);
@@ -89,10 +97,10 @@ public class CaptchaUtil {
             String flagKey = String.format(RedisKeyConstant.CAPTCHA_FLAG_KEY, captchaType.getText(), phoneNumber);
             String key = String.format(RedisKeyConstant.CAPTCHA_KEY, captchaType.getText(), phoneNumber);
 
-            redisTemplate.opsForValue().set(flagKey, 1, 60);
-            redisTemplate.opsForValue().set(key, captcha, 5 * 60);
+            captchaUtil.stringRedisTemplate.opsForValue().set(flagKey, "1", 60, TimeUnit.SECONDS);
+            captchaUtil.stringRedisTemplate.opsForValue().set(key, captcha.toString(), 5 * 60, TimeUnit.SECONDS);
 
-            if (redisTemplate.opsForValue().get(key) != null) {
+            if (captchaUtil.stringRedisTemplate.opsForValue().get(key) != null) {
                 String tmpCode = getTemplateCode(captchaType);
                 return AliMessageUtil.sendMsg(tmpCode, phoneNumber, jsonParams);
             }
@@ -118,7 +126,7 @@ public class CaptchaUtil {
             String key = captchaType.getText() + "_" + phoneNumber;
             log.info("key: " + key);
             String flag = "flag_" + key;
-            Object c = redisTemplate.opsForValue().get(key);
+            Object c = captchaUtil.stringRedisTemplate.opsForValue().get(key);
             log.info("captcha: " + c);
             if (c == null) {
                 return false;
@@ -126,9 +134,9 @@ public class CaptchaUtil {
             boolean yes = captcha.equals(c.toString());
             log.info("验证结果：" + yes);
             if (yes) {
-                redisTemplate.delete(key);
+                captchaUtil.stringRedisTemplate.delete(key);
             }
-            redisTemplate.delete(flag);
+            captchaUtil.stringRedisTemplate.delete(flag);
             return yes;
         } catch (Exception e) {
             e.printStackTrace();

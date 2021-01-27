@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(dto, userLoginEntity);
             userLoginService.addUser(userLoginEntity);
 
-            userInfoEntity.setLoginId(userInfoEntity.getId());
-            userInfoEntity.generateDdId(userInfoEntity.getId());
+            userInfoEntity.setLoginId(userLoginEntity.getId());
+            userInfoEntity.generateDdId(userLoginEntity.getId());
             userInfoEntity.setNickname(dto.getPhoneNumber().replace(
                     dto.getPhoneNumber().substring(3, 7), "****"));
             userInfoMapper.insert(userInfoEntity);

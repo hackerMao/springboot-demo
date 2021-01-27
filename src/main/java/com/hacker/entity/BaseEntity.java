@@ -1,9 +1,7 @@
 package com.hacker.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,13 +12,16 @@ import java.util.Date;
  * @Date 2021/1/25 21:02
  * @Version 1.0
  */
-@Setter
 @Getter
-@ToString
-@NoArgsConstructor
+@Setter
 public class BaseEntity implements Serializable {
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
     private Date createTime;
+
     private Date updateTime;
+
+    @TableLogic
     private Integer isDelete;
 }

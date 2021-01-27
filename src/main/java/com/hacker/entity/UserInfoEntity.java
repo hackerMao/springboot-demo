@@ -1,9 +1,8 @@
 package com.hacker.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 import java.util.Random;
@@ -14,10 +13,10 @@ import java.util.Random;
  * @Date 2021/1/25 20:58
  * @Version 1.0
  */
-@Setter
-@Getter
-@ToString
-@NoArgsConstructor
+@Data
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
+@TableName("user_info")
 public class UserInfoEntity extends BaseEntity {
     private Integer loginId;
     private String ddId;
